@@ -13,7 +13,8 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Компиляция кода в ASI
-      # g++ берет все .cpp файлы и делает из них библиотеку .asi
+      shell: cmd
+      # Не забудьте добавить -m32 после g++, если мод для старых GTA
       run: g++ -shared -O3 -o MyMod.asi *.cpp
 
     - name: Сохранение результата
