@@ -1,0 +1,31 @@
+name: Build ASI Plugin
+
+# Сборка будет запускаться при каждом пуше в ветки main или master
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Скачивание кода
+      uses: actions/checkout@v4
+
+    - name: Настройка MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Компиляция проекта
+      # ОБЯЗАТЕЛЬНО: замените MyPlugin.sln на имя вашего файла
+      # Если плагин 64-битный (например для GTA V), измените x86 на x64
+      run: msbuild MyPlugin.sln /p:Configuration=Release /p:Platform=x86
+
+    - name: Загрузка готового файла
+      uses: actions/upload-artifact@v4
+      with:
+        name: Compiled-ASI-Plugin
+        # Укажите папку, куда Visual Studio сохраняет готовый файл
+        path: Release/*.asi
